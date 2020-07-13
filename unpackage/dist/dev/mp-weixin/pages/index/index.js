@@ -286,6 +286,11 @@ __webpack_require__.r(__webpack_exports__);
   onPullDownRefresh: function onPullDownRefresh() {
     this.refresh();
   },
+  onHide: function onHide() {
+    if (this.VideoContext) {
+      this.videoContext.pause();
+    }
+  },
   // 页面卸载的时候，清除动画数据
   onUnload: function onUnload() {
     this.animationData = {};
@@ -362,6 +367,23 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
+    // 播放一个视频的时候，需要暂停其他正在播放的视频
+    meIsPlaying: function meIsPlaying(e) {
+      var _this = this;
+      var trailerId = '';
+      if (e) {
+        trailerId = e.currentTarget.dataset.playingindex;
+        _this.videoContext = uni.createVideoContext(trailerId);
+      }
+
+      var hotTrailerList = _this.hotTrailerList;
+      for (var i = 0; i < hotTrailerList.length; i++) {
+        var tempId = hotTrailerList[i].id;
+        if (tempId != trailerId) {
+          uni.createVideoContext(tempId).pause();
+        }
+      }
+    },
     refresh: function refresh() {
       var _this = this;
 

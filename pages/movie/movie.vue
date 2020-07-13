@@ -2,13 +2,15 @@
 	<view class="page">
 		<!-- 视频播放 -->
 		<view class="player">
-			<video :src="trailerInfo.trailer" :poster="trailerInfo.poster" class="movie" controls></video>
+			<video id="myTrailer" :src="trailerInfo.trailer" :poster="trailerInfo.poster" class="movie" controls></video>
 		</view>
 		
 		
 		<!-- 影片基本信息 -->
 		<view class="movie-info">
-			<image :src="trailerInfo.cover" class="cover"></image>
+			<navigator :url="'../cover/cover?cover=' + trailerInfo.cover">
+				<image :src="trailerInfo.cover" class="cover"></image>
+			</navigator>
 			<view class="movie-desc">
 				<view class="title">{{ trailerInfo.name }}</view>
 				<view class="basic-info">{{ trailerInfo.basicInfo }}</view>
@@ -98,8 +100,57 @@
 				actorArray: []		
 			}
 		},
+		// 页面初次渲染完成，获得视频上下文对象
+		onReady() {
+			this.videoContext = uni.createVideoContext('myTrailer')
+		},
+		onHide() {
+			// 页面被隐藏的时候，暂停播放
+			this.videoContext.pause()
+		},
+		onShow() {
+			// 页面被再次显示的时候，可以继续播放
+			if (this.videoContext) {
+				this.videoContext.play()
+			}
+		},
 		components: {
 			TrailerStars
+		},
+		// 此函数仅仅只支持在小程序端的分享，分享到微信群或者微信好友
+		onShareAppMessage(res) {
+			var _this = this
+			return {
+				title: _this.trailerInfo.name,
+				path: '/pages/movie/movie?trailerId=' + _this.trailerInfo.id
+			}
+		},
+		// 监听导航栏的按钮
+		onNavigationBarButtonTap(e) {
+			var index = e.index
+			// console.log(index)
+			var _this = this;
+			var trailerInfo = _this.trailerInfo;
+			var trailerId = trailerInfo.id;
+			var trailerName = trailerInfo.name;
+			var cover = trailerInfo.cover;
+			var poster = trailerInfo.poster;
+			
+			// index 为0 则分享
+			if (index == 0 ) {
+				uni.share({
+					provider: "weixin",
+					scene: "WXSenceTimeline",
+					type: 0,
+					href: "http://www.imovietrailer.com/#/pages/movie/movie?trailerId=" + trailerId,
+					title: "NEXT超英预告：《" + trailerName + "》",
+					summary: "NEXT超英预告：《" + trailerName + "》",
+					imageUrl: cover,
+					success: function (res) {
+						console.log("success:" + JSON.stringify(res));
+					}
+				})
+			}
 		},
 		methods: {
 			lookMe(e) {

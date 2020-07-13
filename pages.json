@@ -26,10 +26,25 @@
             "style" : {
 				"app-plus": {
 					"titleNView": {
-						"type": "transparent"
+						"type": "transparent",
+						"buttons": [
+							{
+								"type":"share"
+							},
+							{
+								"type":"home"
+							},
+							{
+								"type":"forward"
+							}
+						]
 					}
 				}
 			}
+        }
+        ,{
+            "path" : "pages/cover/cover",
+            "style" : {}
         }
     ],
 	"globalStyle": {

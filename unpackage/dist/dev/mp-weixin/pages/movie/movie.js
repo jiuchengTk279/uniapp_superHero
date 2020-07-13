@@ -218,6 +218,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 {
   data: function data() {
     return {
@@ -230,9 +232,58 @@ __webpack_require__.r(__webpack_exports__);
       actorArray: [] };
 
   },
+  // 页面初次渲染完成，获得视频上下文对象
+  onReady: function onReady() {
+    this.videoContext = uni.createVideoContext('myTrailer');
+  },
+  onHide: function onHide() {
+    // 页面被隐藏的时候，暂停播放
+    this.videoContext.pause();
+  },
+  onShow: function onShow() {
+    // 页面被再次显示的时候，可以继续播放
+    if (this.videoContext) {
+      this.videoContext.play();
+    }
+  },
   components: {
     TrailerStars: TrailerStars },
 
+  // 此函数仅仅只支持在小程序端的分享，分享到微信群或者微信好友
+  onShareAppMessage: function onShareAppMessage(res) {
+    var _this = this;
+    return {
+      title: _this.trailerInfo.name,
+      path: '/pages/movie/movie?trailerId=' + _this.trailerInfo.id };
+
+  },
+  // 监听导航栏的按钮
+  onNavigationBarButtonTap: function onNavigationBarButtonTap(e) {
+    var index = e.index;
+    // console.log(index)
+    var _this = this;
+    var trailerInfo = _this.trailerInfo;
+    var trailerId = trailerInfo.id;
+    var trailerName = trailerInfo.name;
+    var cover = trailerInfo.cover;
+    var poster = trailerInfo.poster;
+
+    // index 为0 则分享
+    if (index == 0) {
+      uni.share({
+        provider: "weixin",
+        scene: "WXSenceTimeline",
+        type: 0,
+        href: "http://www.imovietrailer.com/#/pages/movie/movie?trailerId=" + trailerId,
+        title: "NEXT超英预告：《" + trailerName + "》",
+        summary: "NEXT超英预告：《" + trailerName + "》",
+        imageUrl: cover,
+        success: function success(res) {
+          console.log("success:" + JSON.stringify(res));
+        } });
+
+    }
+  },
   methods: {
     lookMe: function lookMe(e) {
       var _this = this;

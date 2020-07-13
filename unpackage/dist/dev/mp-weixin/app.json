@@ -3,7 +3,8 @@
     "pages/search/search",
     "pages/index/index",
     "pages/me/me",
-    "pages/movie/movie"
+    "pages/movie/movie",
+    "pages/cover/cover"
   ],
   "subPackages": [],
   "window": {

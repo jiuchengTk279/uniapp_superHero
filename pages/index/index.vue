@@ -66,7 +66,7 @@
 		</view>
 		
 		<view class="hot-movies page-block">
-			<video v-for="(trailer,index) in hotTrailerList" :key="index" :src="trailer.trailer" :poster="trailer.poster" controls class="hot-movie-single"></video>
+			<video :id="trailer.id" :data-playinyindex="trailer.id" @play="meIsPlaying" v-for="(trailer,index) in hotTrailerList" :key="index" :src="trailer.trailer" :poster="trailer.poster" controls class="hot-movie-single"></video>
 		</view>
 		
 		
@@ -154,6 +154,11 @@
 		onPullDownRefresh() {
 			this.refresh()
 		},
+		onHide() {
+			if (this.VideoContext) {
+				this.videoContext.pause()
+			}
+		},
 		// 页面卸载的时候，清除动画数据
 		onUnload() {
 			this.animationData = {}
@@ -230,6 +235,23 @@
 			
 		},
 		methods: {
+			// 播放一个视频的时候，需要暂停其他正在播放的视频
+			meIsPlaying(e) {
+				var _this = this
+				var trailerId = '';
+				 if (e) {
+					 trailerId = e.currentTarget.dataset.playingindex
+					 _this.videoContext = uni.createVideoContext(trailerId)
+				 }
+				 
+				 var hotTrailerList = _this.hotTrailerList
+				 for(var i=0; i< hotTrailerList.length; i++) {
+					 var tempId = hotTrailerList[i].id
+					 if (tempId != trailerId) {
+						 uni.createVideoContext(tempId).pause()
+					 }
+				 }
+			},
 			refresh() {
 				var _this = this
 				
