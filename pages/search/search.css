@@ -1,0 +1,72 @@
+/* 搜索框 */
+.search-ico {
+	width: 40upx;
+	height: 40upx;
+}
+.search-text {
+	font-size: 14px;
+	background-color: #eaeaea;
+	height: 60upx;
+	width: 650upx;
+}
+.search-block {
+	display: flex;
+	flex-direction: row;
+	padding: 0 20upx 20upx 20upx;
+	/* 固定搜索栏 */
+	position: fixed;
+	top: 100;
+	z-index: 1000;
+	/* background-color: #8f8f8f; */
+}
+.search-ico-wapper {
+	background-color: #eaeaea;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 0upx 10upx;
+}
+
+/* 预告片列表 */
+.poster {
+	width: 200upx;
+	height: 270upx;
+}
+.movie-list {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	padding: 10upx 10upx 0upx 10upx;
+}
+.movie-wapper {
+	padding: 10upx 20upx;
+}
+
+
+/* 演职人员 */
+.single-actor {
+	width: 170upx;
+	height: 240upx;
+	margin-right: 10upx;
+}
+.actor-wapper {
+	display: inline-block;
+}
+.actor-name {
+	width: 170upx;
+	text-align: center;
+	font-size: 15px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.actor-role {
+	width: 170upx;
+	text-align: center;
+	font-size: 13px;
+	color: #A9A9A9;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
