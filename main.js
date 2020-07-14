@@ -8,6 +8,16 @@ Vue.prototype.serverUrl = "https://www.imovietrailer.com/superhero";
 // 开发环境
 // Vue.prototype.serverUrl = "https://www.imovietrailer-dev.com/superhero";		
 
+
+Vue.prototype.getGlobalUser = function(key) {
+	var userInfo = uni.getStorageSync("globalUser");
+	if (userInfo != null && userInfo != "" && userInfo != undefined) {
+		return userInfo;
+	} else {
+		return null;
+	}
+}
+
 App.mpType = 'app'
 
 const app = new Vue({
